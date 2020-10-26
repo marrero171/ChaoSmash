@@ -6,7 +6,11 @@ func _ready():
 	add_state("run")
 	add_state("dash")
 	add_state("jump")
+	add_state("double_jump")
 	add_state("fall")
+	add_state("hit_stun")
+	add_state("ground_attack")
+	add_state("air_attack")
 	call_deferred("set_state",states.idle)
 
 func _input(event):
@@ -44,9 +48,6 @@ func _state_logic(delta):
 	if [states.dash].has(state):
 		parent._sprint_movement()
 	
-	#if [states.dash].has(state):
-	#	parent._sprint_movement()
-	#Vertical Movement
 	if parent.is_grounded && parent.current_jumps != parent.movement_settings.air_jumps:
 		parent._reset_air_jump()
 	parent._apply_gravity(delta)
@@ -88,12 +89,33 @@ func _get_transition(delta):
 				return states.idle
 			elif parent.velocity.y >= 0:
 				return states.fall
+		states.double_jump:
+			
+			
+			
+			return
 		states.fall:
 			if parent.is_on_floor():
 				return states.idle
 			elif parent.velocity.y < 0:
 				return states.jump
-	
+		states.hit_stun:
+			
+			
+			
+			return
+		states.ground_attack:
+			
+			
+			
+			
+			return
+		states.air_attack:
+			
+			
+			
+			
+			return
 	return null
 
 func _enter_state(new_state, old_state):
@@ -107,7 +129,7 @@ func _enter_state(new_state, old_state):
 			pass
 		states.jump:
 			pass
-		states.jump:
+		states.double_jump:
 			pass
 		states.fall:
 			pass

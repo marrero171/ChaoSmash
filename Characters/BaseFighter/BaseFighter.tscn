@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 
@@ -16,6 +16,12 @@ resource_name = "dash"
 [sub_resource type="Animation" id=6]
 resource_name = "hit"
 
+[sub_resource type="Animation" id=7]
+resource_name = "squash"
+
+[sub_resource type="Animation" id=8]
+resource_name = "stretch"
+
 [node name="Fighter" type="KinematicBody2D"]
 collision_layer = 2
 __meta__ = {
@@ -32,6 +38,8 @@ anims/run = SubResource( 5 )
 
 [node name="EffectAnimations" type="AnimationPlayer" parent="."]
 anims/hit = SubResource( 6 )
+anims/squash = SubResource( 7 )
+anims/stretch = SubResource( 8 )
 
 [node name="BaseFSM" type="Node" parent="."]
 __meta__ = {

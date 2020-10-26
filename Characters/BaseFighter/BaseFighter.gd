@@ -94,8 +94,8 @@ func _apply_gravity(delta):
 
 
 func _apply_movement():
-		velocity = move_and_slide(velocity,Vector2.UP)
-		is_grounded = _check_is_grounded()
+	velocity = move_and_slide(velocity,Vector2.UP)
+	is_grounded = _check_is_grounded()
 
 func _run_movement():
 		velocity.x = lerp(velocity.x, stats.speed * move_direction,_get_h_weight())

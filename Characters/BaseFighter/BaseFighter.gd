@@ -5,13 +5,22 @@ onready var ground_raycasts = $GroundRaycasts
 onready var body = $Body
 onready var baseFSM = $BaseFSM
 onready var base_state_label = $BaseFSMlabel
+
 #Constants
 const MAX_SPEED : int = 580
 const MAX_STRENGTH : int = 100
 const MAX_DEFENSE : int = 100
 
 #Checks
-var is_sprinting = false
+var is_sprinting : bool = false
+var is_attacking : bool = false
+var can_attack : bool = true
+var can_block : bool = true
+#Player Inputs
+var input_list = []
+
+
+
 
 #Variables
 var velocity : Vector2 = Vector2()
@@ -89,13 +98,8 @@ func _check_is_grounded():
 func _apply_gravity(delta):
 	velocity.y += Globals.gravity * delta
 
-
 #Horizontal Movement
 
-
-func _apply_movement():
-	velocity = move_and_slide(velocity,Vector2.UP)
-	is_grounded = _check_is_grounded()
 
 func _run_movement():
 		velocity.x = lerp(velocity.x, stats.speed * move_direction,_get_h_weight())
@@ -104,7 +108,7 @@ func _run_movement():
 func _sprint_movement():
 		velocity.x = lerp(velocity.x, stats.speed * movement_settings.sprint_multiplier * move_direction, _get_h_weight())
 
-#Detects left and right inputs
+#Detects left and right inputs for running
 func _left_right_input():
 	move_direction = -int(Input.is_action_pressed("player_left")) +int(Input.is_action_pressed("player_right"))
 
@@ -116,3 +120,52 @@ func _update_facing():
 #Gets the "friction" and applies it
 func _get_h_weight():
 	return movement_settings.ground_friction if is_grounded else movement_settings.air_control
+
+#Input Management
+
+func _apply_movement():
+	velocity = move_and_slide(velocity,Vector2.UP)
+	is_grounded = _check_is_grounded()
+
+
+#Checks for inputs and turns them to bool
+func _detect_inputs():
+	#detects inputs to feed into the input list
+	if Input.is_action_just_pressed("player_left"):
+		
+		return "left"
+	
+	if Input.is_action_just_pressed("player_right"):
+		
+		return "right"
+	
+	if Input.is_action_just_pressed("player_up"):
+		
+		return "up"
+	
+	if Input.is_action_just_pressed("player_down"):
+		
+		return "down"
+	
+	if Input.is_action_just_pressed("player_light_attack"):
+		
+		return "light_attack"
+	
+	if Input.is_action_just_pressed("player_heavy_attack"):
+		
+		return "heavy_attack"
+
+func _clear_input_list():
+	
+	input_list.clear()
+
+
+func _physics_process(delta):
+	
+	if _detect_inputs() != null:
+		print(_detect_inputs())
+		input_list.push_back(_detect_inputs())
+		print(input_list)
+
+func _list_inputs():
+	input_list.push_back(_detect_inputs())

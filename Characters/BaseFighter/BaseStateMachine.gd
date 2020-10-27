@@ -6,10 +6,10 @@ func _ready():
 	add_state("run")
 	add_state("dash")
 	add_state("jump")
-	add_state("double_jump")
 	add_state("fall")
 	add_state("hit_stun")
 	add_state("ground_attack")
+	add_state("block")
 	add_state("air_attack")
 	call_deferred("set_state",states.idle)
 
@@ -29,10 +29,13 @@ func _input(event):
 	
 	#Dashing
 	if event.is_action_pressed("temp_dash"):
-		print("Shift Pressed")
+		#print("Shift Pressed")
 		parent.is_sprinting = true
 	if event.is_action_released("temp_dash"):
 		parent.is_sprinting = false
+	
+	if event.is_action_pressed("clear_inputs"):
+		parent._clear_input_list()
 
 func _state_logic(delta):
 	#General Movement
@@ -89,11 +92,6 @@ func _get_transition(delta):
 				return states.idle
 			elif parent.velocity.y >= 0:
 				return states.fall
-		states.double_jump:
-			
-			
-			
-			return
 		states.fall:
 			if parent.is_on_floor():
 				return states.idle
@@ -110,6 +108,10 @@ func _get_transition(delta):
 			
 			
 			return
+		states.block:
+			
+			
+			return
 		states.air_attack:
 			
 			
@@ -122,17 +124,23 @@ func _enter_state(new_state, old_state):
 	parent.base_state_label.set_text(states.keys()[state])
 	match new_state:
 		states.idle:
-			pass
+			return
 		states.run:
-			pass
+			return
 		states.dash:
-			pass
+			return
 		states.jump:
-			pass
-		states.double_jump:
-			pass
+			return
 		states.fall:
-			pass
+			return
+		states.hit_stun:
+			return
+		states.ground_attack:
+			return
+		states.block:
+			return
+		states.air_attack:
+			return
 	pass
 
 
